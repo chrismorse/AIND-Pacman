@@ -86,12 +86,9 @@ def depthFirstSearch(problem):
   "*** YOUR CODE HERE ***"
   print "*" * 15
 
-
-  
-
   initial_state = problem.getStartState();  
   print initial_state
-  frontier = util.Stack()
+  frontier = util.Stack()   # use a Stack
   explored = set()
 
   frontier.push((initial_state,[]))
@@ -110,7 +107,7 @@ def depthFirstSearch(problem):
 
     successors = problem.getSuccessors(node)
 
-    for nextNode, nextNode_direction, cost in reversed(successors):
+    for nextNode, nextNode_direction, cost in successors:
       print "nextNode is ", nextNode
       print "nextNode_direction is ", nextNode_direction
     
@@ -133,12 +130,89 @@ def breadthFirstSearch(problem):
   [2nd Edition: p 73, 3rd Edition: p 82]
   """
   "*** YOUR CODE HERE ***"
-  util.raiseNotDefined()
-      
+
+  print "*" * 15
+
+  initial_state = problem.getStartState();  
+  print initial_state
+  frontier = util.Queue()  # use a Queue
+  explored = set()
+
+  frontier.push((initial_state,[]))
+
+  while not frontier.isEmpty():
+    (node, path) = frontier.pop()
+
+    print "node is ", node
+    print "path is ", path
+    print "my successors are ", problem.getSuccessors(node)
+
+    if problem.isGoalState(node):
+      return path
+
+    explored.add(node)
+
+    successors = problem.getSuccessors(node)
+
+    for nextNode, nextNode_direction, cost in successors:
+      print "nextNode is ", nextNode
+      print "nextNode_direction is ", nextNode_direction
+    
+      if nextNode not in explored:
+          frontier.push((nextNode, path + [nextNode_direction]))
+    
+  return []
+  
+  
+  print "*" * 15
+
+
+
+
+
+
 def uniformCostSearch(problem):
   "Search the node of least total cost first. "
   "*** YOUR CODE HERE ***"
-  util.raiseNotDefined()
+
+  print "*" * 15
+
+  initial_state = problem.getStartState();  
+  print initial_state
+  frontier = util.PriorityQueue()  # use a Priority Queue
+  explored = set()
+
+  frontier.push((initial_state,[]), 1)
+
+  while not frontier.isEmpty():
+    (node, path) = frontier.pop()
+
+    print "node is ", node
+    print "path is ", path
+    print "my successors are ", problem.getSuccessors(node)
+
+    if problem.isGoalState(node):
+      return path
+
+    explored.add(node)
+
+    successors = problem.getSuccessors(node)
+
+    for nextNode, nextNode_direction, cost in successors:
+      print "nextNode is ", nextNode
+      print "nextNode_direction is ", nextNode_direction
+      print "cost is ", cost
+    
+      if nextNode not in explored:
+          frontier.push((nextNode, path + [nextNode_direction]), cost)
+    
+  return []
+  
+  print "*" * 15
+
+
+
+
 
 def nullHeuristic(state, problem=None):
   """
