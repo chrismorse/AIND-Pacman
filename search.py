@@ -178,33 +178,36 @@ def uniformCostSearch(problem):
   print "*" * 15
 
   initial_state = problem.getStartState();  
-  print initial_state
   frontier = util.PriorityQueue()  # use a Priority Queue
-  explored = set()
+  explored_set = set()
 
-  frontier.push((initial_state,[]), 1)
+  frontier.push((initial_state, []), 0)
 
   while not frontier.isEmpty():
     (node, path) = frontier.pop()
-
     print "node is ", node
-    print "path is ", path
-    print "my successors are ", problem.getSuccessors(node)
 
     if problem.isGoalState(node):
       return path
 
-    explored.add(node)
+    cost = problem.getCostOfActions(path)
+    explored_set.add(node)
 
     successors = problem.getSuccessors(node)
+    for nextNode, nextNode_direction, nextNode_cost in successors:
+      print " -" * 15
+      print " nextNode is ", nextNode
+      print " nextNode_direction is ", nextNode_direction
+      print " nextNode_cost is ", nextNode_cost
+      
+      totalCost = cost + nextNode_cost
+      print " totalCost is ", totalCost
+      
+      print " -" * 15
+      print " "
 
-    for nextNode, nextNode_direction, cost in successors:
-      print "nextNode is ", nextNode
-      print "nextNode_direction is ", nextNode_direction
-      print "cost is ", cost
-    
-      if nextNode not in explored:
-          frontier.push((nextNode, path + [nextNode_direction]), cost)
+      if nextNode not in explored_set:
+          frontier.push((nextNode, path + [nextNode_direction]), totalCost)
     
   return []
   
@@ -224,7 +227,54 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
   "Search the node that has the lowest combined cost and heuristic first."
   "*** YOUR CODE HERE ***"
-  util.raiseNotDefined()
+  
+  print "*" * 15
+
+  initial_state = problem.getStartState();  
+  frontier = util.PriorityQueue()  # use a Priority Queue
+  explored_set = set()
+
+  frontier.push((initial_state, []), 0)
+
+  while not frontier.isEmpty():
+    (node, path) = frontier.pop()
+    print "node is ", node
+
+    if problem.isGoalState(node):
+      return path
+
+    cost = problem.getCostOfActions(path)
+    explored_set.add(node)
+
+    successors = problem.getSuccessors(node)
+    for nextNode, nextNode_direction, nextNode_cost in successors:
+      print " -" * 15
+      print " nextNode is ", nextNode
+      print " nextNode_direction is ", nextNode_direction
+      print " nextNode_cost is ", nextNode_cost
+      
+      totalCost = cost + nextNode_cost
+      print " totalCost is ", totalCost
+      
+      h = heuristic(nextNode, problem)
+      print "h is ", h
+    
+      totalPriority = totalCost + h
+      print "totalPriority ", totalPriority
+  
+      print " -" * 15
+      print " "
+
+      if nextNode not in explored_set:
+          frontier.push((nextNode, path + [nextNode_direction]), totalPriority)
+
+  return []
+  
+  print "*" * 15
+  
+  
+
+  
     
   
 # Abbreviations
