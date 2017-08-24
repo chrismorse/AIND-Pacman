@@ -137,21 +137,17 @@ def breadthFirstSearch(problem):
   print "*" * 15
 
   initial_state = problem.getStartState();  
-  print initial_state
+  print "initial state ", initial_state
   frontier = util.Queue()  # use a Queue
   explored_set = set()
   frontier_set = set()
   frontier_set.add(initial_state)
 
 
-  frontier.push((initial_state,[]))
+  frontier.push((initial_state, []))
 
   while not frontier.isEmpty():
     (node, path) = frontier.pop()
-
-    print "node is ", node
-    print "path is ", path
-    print "my successors are ", problem.getSuccessors(node)
 
     if problem.isGoalState(node):
       return path
@@ -161,17 +157,15 @@ def breadthFirstSearch(problem):
     successors = problem.getSuccessors(node)
 
     for nextNode, nextNode_direction, cost in successors:
-      print "nextNode is ", nextNode
-      print "nextNode_direction is ", nextNode_direction
     
       if nextNode not in explored_set and nextNode not in frontier_set:
           frontier.push((nextNode, path + [nextNode_direction]))
           frontier_set.add(nextNode)
 
+
   return []
   
   
-  print "*" * 15
 
 
 

@@ -278,17 +278,23 @@ class CornersProblem(search.SearchProblem):
         print 'Warning: no food in corner ' + str(corner)
     self._expanded = 0 # Number of search nodes expanded
     
+
     "*** YOUR CODE HERE ***"
+    #self.visitedCorners = (False, False, False, False)
+    self.costFn = lambda x: 1
     
   def getStartState(self):
     "Returns the start state (in your state space, not the full Pacman state space)"
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    return  (self.startingPosition, (False, False, False, False))
+
     
   def isGoalState(self, state):
     "Returns whether this search state is a goal state of the problem"
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    
+    _, cornerState = state
+    return all(cornerState)
        
   def getSuccessors(self, state):
     """
@@ -301,7 +307,11 @@ class CornersProblem(search.SearchProblem):
      required to get there, and 'stepCost' is the incremental 
      cost of expanding to that successor
     """
-    
+
+    currentPosition, cornerState = state
+    corner1, corner2, corner3, corner4 = self.corners
+    visitedCorner1, visitedCorner2, visitedCorner3, visitedCorner4 = cornerState
+
     successors = []
     for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
       # Add a successor state to the successor list if the action is legal
@@ -312,6 +322,25 @@ class CornersProblem(search.SearchProblem):
       #   hitsWall = self.walls[nextx][nexty]
       
       "*** YOUR CODE HERE ***"
+      
+      x,y = currentPosition
+      dx, dy = Actions.directionToVector(action)
+      nextx, nexty = int(x + dx), int(y + dy)
+      hitsWall = self.walls[nextx][nexty]
+
+      if not hitsWall:
+        if currentPosition in self.corners:
+          if corner1 == currentPosition:
+            visitedCorner1 = True
+          elif corner2 == currentPosition:
+            visitedCorner2 = True
+          elif corner3 == currentPosition:
+            visitedCorner3 = True
+          elif corner4 == currentPosition:
+            visitedCorner4 = True
+
+        newCornerState = (visitedCorner1, visitedCorner2, visitedCorner3, visitedCorner4)
+        successors.append(( ((nextx, nexty), newCornerState), action, 1))
       
     self._expanded += 1
     return successors
