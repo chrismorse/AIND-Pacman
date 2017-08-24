@@ -180,8 +180,10 @@ def uniformCostSearch(problem):
   initial_state = problem.getStartState();  
   frontier = util.PriorityQueue()  # use a Priority Queue
   explored_set = set()
+  frontier_set = set()
 
   frontier.push((initial_state, []), 0)
+  frontier_set.add(initial_state)
 
   while not frontier.isEmpty():
     (node, path) = frontier.pop()
@@ -206,8 +208,11 @@ def uniformCostSearch(problem):
       print " -" * 15
       print " "
 
-      if nextNode not in explored_set:
+      if nextNode not in explored_set and nextNode not in frontier_set:
           frontier.push((nextNode, path + [nextNode_direction]), totalCost)
+          frontier_set.add(nextNode)
+          print "nextNode not in explored", nextNode
+
     
   return []
   
@@ -233,8 +238,10 @@ def aStarSearch(problem, heuristic=nullHeuristic):
   initial_state = problem.getStartState();  
   frontier = util.PriorityQueue()  # use a Priority Queue
   explored_set = set()
+  frontier_set = set()
 
   frontier.push((initial_state, []), 0)
+  frontier_set.add(initial_state)
 
   while not frontier.isEmpty():
     (node, path) = frontier.pop()
@@ -262,11 +269,13 @@ def aStarSearch(problem, heuristic=nullHeuristic):
       totalPriority = totalCost + h
       print "totalPriority ", totalPriority
   
+
+      if nextNode not in explored_set and nextNode not in frontier_set: 
+          frontier.push((nextNode, path + [nextNode_direction]), totalPriority)
+          print "nextNode not in explored", nextNode
+
       print " -" * 15
       print " "
-
-      if nextNode not in explored_set:
-          frontier.push((nextNode, path + [nextNode_direction]), totalPriority)
 
   return []
   
