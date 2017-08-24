@@ -89,7 +89,9 @@ def depthFirstSearch(problem):
   initial_state = problem.getStartState();  
   print initial_state
   frontier = util.Stack()   # use a Stack
-  explored = set()
+  explored_set = set()
+  frontier_set = set()
+  frontier_set.add(initial_state)
 
   frontier.push((initial_state,[]))
 
@@ -103,7 +105,7 @@ def depthFirstSearch(problem):
     if problem.isGoalState(node):
       return path
 
-    explored.add(node)
+    explored_set.add(node)
 
     successors = problem.getSuccessors(node)
 
@@ -111,9 +113,10 @@ def depthFirstSearch(problem):
       print "nextNode is ", nextNode
       print "nextNode_direction is ", nextNode_direction
     
-      if nextNode not in explored:
+      if nextNode not in explored_set and nextNode not in frontier_set:
           frontier.push((nextNode, path + [nextNode_direction]))
-    
+          frontier_set.add(nextNode)
+
   return []
   
   
@@ -136,7 +139,10 @@ def breadthFirstSearch(problem):
   initial_state = problem.getStartState();  
   print initial_state
   frontier = util.Queue()  # use a Queue
-  explored = set()
+  explored_set = set()
+  frontier_set = set()
+  frontier_set.add(initial_state)
+
 
   frontier.push((initial_state,[]))
 
@@ -150,7 +156,7 @@ def breadthFirstSearch(problem):
     if problem.isGoalState(node):
       return path
 
-    explored.add(node)
+    explored_set.add(node)
 
     successors = problem.getSuccessors(node)
 
@@ -158,9 +164,10 @@ def breadthFirstSearch(problem):
       print "nextNode is ", nextNode
       print "nextNode_direction is ", nextNode_direction
     
-      if nextNode not in explored:
+      if nextNode not in explored_set and nextNode not in frontier_set:
           frontier.push((nextNode, path + [nextNode_direction]))
-    
+          frontier_set.add(nextNode)
+
   return []
   
   
