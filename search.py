@@ -134,10 +134,7 @@ def breadthFirstSearch(problem):
   """
   "*** YOUR CODE HERE ***"
 
-  print "*" * 15
-
   initial_state = problem.getStartState();  
-  print "initial state ", initial_state
   frontier = util.Queue()  # use a Queue
   explored_set = set()
   frontier_set = set()
@@ -220,15 +217,13 @@ def uniformCostSearch(problem):
   print "*" * 15
 
 
-
-
-
 def nullHeuristic(state, problem=None):
   """
   A heuristic function estimates the cost from the current state to the nearest
   goal in the provided SearchProblem.  This heuristic is trivial.
   """
   return 0
+
 
 def aStarSearch(problem, heuristic=nullHeuristic):
   "Search the node that has the lowest combined cost and heuristic first."
