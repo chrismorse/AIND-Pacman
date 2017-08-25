@@ -229,9 +229,9 @@ def aStarSearch(problem, heuristic=nullHeuristic):
   "Search the node that has the lowest combined cost and heuristic first."
   "*** YOUR CODE HERE ***"
   
-  print "*" * 15
-
+  
   initial_state = problem.getStartState();  
+  print "initial_state = ", initial_state
   frontier = util.PriorityQueue()  # use a Priority Queue
   explored_set = set()
   frontier_set = set()
@@ -240,8 +240,13 @@ def aStarSearch(problem, heuristic=nullHeuristic):
   frontier_set.add(initial_state)
 
   while not frontier.isEmpty():
+    print "*" * 15
+
+    
     (node, path) = frontier.pop()
-    print "node is ", node
+    #print "node is ", node
+
+    print "path ", path
 
     if problem.isGoalState(node):
       return path
@@ -254,23 +259,22 @@ def aStarSearch(problem, heuristic=nullHeuristic):
       print " -" * 15
       print " nextNode is ", nextNode
       print " nextNode_direction is ", nextNode_direction
-      print " nextNode_cost is ", nextNode_cost
+      #print " nextNode_cost is ", nextNode_cost
       
       totalCost = cost + nextNode_cost
       print " totalCost is ", totalCost
       
       h = heuristic(nextNode, problem)
-      print "h is ", h
+      print " h is ", h
     
       totalPriority = totalCost + h
-      print "totalPriority ", totalPriority
+      print " totalPriority ", totalPriority
   
 
       if nextNode not in explored_set and nextNode not in frontier_set: 
           frontier.push((nextNode, path + [nextNode_direction]), totalPriority)
-          print "nextNode not in explored", nextNode
+          print "  >> adding to frontier - nextNode", nextNode, " - Priority: ", totalPriority
 
-      print " -" * 15
       print " "
 
   return []

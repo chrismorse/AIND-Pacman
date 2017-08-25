@@ -280,19 +280,17 @@ class CornersProblem(search.SearchProblem):
     
 
     "*** YOUR CODE HERE ***"
-    #self.visitedCorners = (False, False, False, False)
-    self.costFn = lambda x: 1
-    
+  def costFn(self, cornerState):
+    return 1 
+
   def getStartState(self):
     "Returns the start state (in your state space, not the full Pacman state space)"
     "*** YOUR CODE HERE ***"
     return  (self.startingPosition, (False, False, False, False))
-
     
   def isGoalState(self, state):
     "Returns whether this search state is a goal state of the problem"
     "*** YOUR CODE HERE ***"
-    
     _, cornerState = state
     return all(cornerState)
        
@@ -313,14 +311,7 @@ class CornersProblem(search.SearchProblem):
     visitedCorner1, visitedCorner2, visitedCorner3, visitedCorner4 = cornerState
 
     successors = []
-    for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
-      # Add a successor state to the successor list if the action is legal
-      # Here's a code snippet for figuring out whether a new position hits a wall:
-      #   x,y = currentPosition
-      #   dx, dy = Actions.directionToVector(action)
-      #   nextx, nexty = int(x + dx), int(y + dy)
-      #   hitsWall = self.walls[nextx][nexty]
-      
+    for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:      
       "*** YOUR CODE HERE ***"
       
       x,y = currentPosition
@@ -340,7 +331,10 @@ class CornersProblem(search.SearchProblem):
             visitedCorner4 = True
 
         newCornerState = (visitedCorner1, visitedCorner2, visitedCorner3, visitedCorner4)
-        successors.append(( ((nextx, nexty), newCornerState), action, 1))
+        cost = self.costFn(newCornerState)
+
+
+        successors.append(( ((nextx, nexty), newCornerState), action, cost))
       
     self._expanded += 1
     return successors
@@ -376,18 +370,34 @@ def cornersHeuristic(state, problem):
   walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
   
   "*** YOUR CODE HERE ***"
-  #print "cornerHeuristic ", state[0], corners[1]
   currentPosition, cornerState = state
-  #print cornerState
-  total = 0
+  total = []
+  minTotal = 0
   index = 0
   for corner in corners:
+    thisTotal = 99999
     if not cornerState[index]:
-      total += abs(corner[0] - state[0][0]) + abs(corner[1] - state[0][1])
-    #print "total =", total
-    index = index + 1
+      thisTotal = abs(corner[0] - state[0][0]) + abs(corner[1] - state[0][1])
+    
+    total.append(thisTotal)
+    index += 1
 
-  return total
+  totalCornersNotSeen = 0
+  for corner in cornerState:
+    if not corner:
+      totalCornersNotSeen += 1
+
+  if total:
+    minTotal = min(total)
+
+  #print "corners = ", corners
+  #print "cornerState = ", cornerState
+  #print "total = ", total
+  print "min total = ", minTotal
+
+  # as you reach each goal, the number should go down drastically.. 
+  # then old paths that don't reach a goal don't get processed in the priority queue.
+  return  minTotal ** totalCornersNotSeen
 
 
 class AStarCornersAgent(SearchAgent):
