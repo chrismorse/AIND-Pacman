@@ -428,6 +428,7 @@ class FoodSearchProblem:
   def isGoalState(self, state):
     return state[1].count() == 0
 
+
   def getSuccessors(self, state):
     "Returns successor states, the actions they require, and a cost of 1."
     successors = []
@@ -487,9 +488,35 @@ def foodHeuristic(state, problem):
     problem.heuristicInfo['wallCount'] = problem.walls.count()
   Subsequent calls to this heuristic can access problem.heuristicInfo['wallCount']
   """
-  position, foodGrid = state
+
   "*** YOUR CODE HERE ***"
-  return 0
+
+  position, foodGrid = state
+  #print "state = ", state
+  #print "position = ", position
+  # print "foodGrid = ", foodGrid
+
+  problem.heuristicInfo['lastFoodGrid'] = foodGrid
+
+  foodNodes = []
+  total = 0
+  i = 1
+  j = 1
+  for x in foodGrid:
+    for y in x:
+      if y:
+        foodNodes.append((i,j))
+      j += 1
+    i += 1
+    j = 1
+
+  problem.heuristicInfo['foodNodes'] = foodNodes
+  
+  thisTotal = 0
+  for node in foodNodes:
+    thisTotal = abs(node[0] - position[0]) + abs(node[1] - position[1])
+
+  return thisTotal
   
 class ClosestDotSearchAgent(SearchAgent):
   "Search for all food using a sequence of searches"

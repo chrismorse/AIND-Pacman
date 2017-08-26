@@ -247,6 +247,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     #print "node is ", node
 
     print "path ", path
+    
 
     if problem.isGoalState(node):
       return path
