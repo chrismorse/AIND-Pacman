@@ -511,12 +511,26 @@ def foodHeuristic(state, problem):
     j = 1
 
   problem.heuristicInfo['foodNodes'] = foodNodes
+  print "foodNode count = ", len(foodNodes)
   
+  total = []
+  minTotal = 0
   thisTotal = 0
   for node in foodNodes:
     thisTotal = abs(node[0] - position[0]) + abs(node[1] - position[1])
+    total.append(thisTotal)
 
-  return thisTotal
+  if total:
+    minTotal = min(total)
+
+  foodNodeCount = len(foodNodes)
+  print "total = ", total
+
+  minTotal += 5
+  print "minTotal = ", minTotal
+
+
+  return minTotal ** foodNodeCount
   
 class ClosestDotSearchAgent(SearchAgent):
   "Search for all food using a sequence of searches"
