@@ -578,13 +578,8 @@ class AnyFoodSearchProblem(PositionSearchProblem):
     x,y = state
 
     "*** YOUR CODE HERE ***"
-    for node in self.food.asList():
-      if node == (x,y):
-        return True
+    return self.food[x][y]
     
-    return False
-
-
 ##################
 # Mini-contest 1 #
 ##################
