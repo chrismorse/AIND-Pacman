@@ -492,46 +492,29 @@ def foodHeuristic(state, problem):
   "*** YOUR CODE HERE ***"
 
   position, foodGrid = state
-  #print "state = ", state
-  #print "position = ", position
-  # print "foodGrid = ", foodGrid
-
-  problem.heuristicInfo['lastFoodGrid'] = foodGrid
-
-  foodNodes = []
-  total = 0
-  i = 1
-  j = 1
-  for x in foodGrid:
-    for y in x:
-      if y:
-        foodNodes.append((i,j))
-      j += 1
-    i += 1
-    j = 1
-
-  problem.heuristicInfo['foodNodes'] = foodNodes
+  foodNodes = foodGrid.asList()
+  #problem.heuristicInfo['foodNodes'] = foodNodes
+  print "foodNodes = ", foodNodes
   print "foodNode count = ", len(foodNodes)
   
   total = []
-  minTotal = 0
   thisTotal = 0
   for node in foodNodes:
     thisTotal = abs(node[0] - position[0]) + abs(node[1] - position[1])
     total.append(thisTotal)
 
+  minTotal = 0
   if total:
-    minTotal = min(total)
+    minTotal = min(total) 
 
   foodNodeCount = len(foodNodes)
   print "total = ", total
 
-  minTotal += 5
+  minTotal += foodNodeCount   # need to make min larger for more separation
   print "minTotal = ", minTotal
 
-
   return minTotal ** foodNodeCount
-  
+
 class ClosestDotSearchAgent(SearchAgent):
   "Search for all food using a sequence of searches"
   def registerInitialState(self, state):
@@ -558,8 +541,9 @@ class ClosestDotSearchAgent(SearchAgent):
     problem = AnyFoodSearchProblem(gameState)
 
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
-  
+
+    return(search.astar(problem))
+
 class AnyFoodSearchProblem(PositionSearchProblem):
   """
     A search problem for finding a path to any food.
@@ -592,9 +576,14 @@ class AnyFoodSearchProblem(PositionSearchProblem):
     that will complete the problem definition.
     """
     x,y = state
-    
+
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    for node in self.food.asList():
+      if node == (x,y):
+        return True
+    
+    return False
+
 
 ##################
 # Mini-contest 1 #

@@ -244,9 +244,9 @@ def aStarSearch(problem, heuristic=nullHeuristic):
 
     
     (node, path) = frontier.pop()
-    #print "node is ", node
+    print "node is ", node
 
-    print "path ", path
+    #print "path ", path
     
 
     if problem.isGoalState(node):
